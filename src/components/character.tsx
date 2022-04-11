@@ -8,7 +8,7 @@ const Character : React.FC<{ character: DisneyCharacter}> = ( { character }) =>
     let imageSrc = "https://picsum.photos/300/200/?blur";
     if (character.imageUrl) {
       // strip of API for further images
-      imageSrc = character.imageUrl.substring(0,character.imageUrl.indexOf('/revision'));
+      imageSrc = ((character.imageUrl.indexOf('/revision') > -1) ? character.imageUrl.substring(0,character.imageUrl.indexOf('/revision')):character.imageUrl);
     };
 
     return (

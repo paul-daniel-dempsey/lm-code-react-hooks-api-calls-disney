@@ -10,13 +10,15 @@ import axios from 'axios';
 const App : React.FC = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-
-  // Some dummy state representing disney characters
   const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
 
   useEffect(() => {
     getCharacters(1);
   }, []);
+
+  useEffect(() => {
+    getCharacters(currentPage);
+  }, [currentPage])
 
   const getCharacters = async (pageNumber: number) => {
     const apiResponse = await axios.get(`https://api.disneyapi.dev/characters?page=${pageNumber}`);
