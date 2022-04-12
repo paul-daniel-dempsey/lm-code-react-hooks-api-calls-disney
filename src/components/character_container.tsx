@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { DisplayFavContext, FavouritesContext } from '../App';
 import { DisneyCharacter } from '../disney_character';
 import Character from './character';
 
@@ -10,13 +11,22 @@ interface CharacterContainerProps {
 // - defining an anonymous type that just has one property - an array of DisneyCharacter
 const CharacterContainer : React.FC<CharacterContainerProps> = ( { characters}) => {
 
+    // Consume
+    let characterFavourites = useContext(FavouritesContext);
+    const displayFav = useContext(DisplayFavContext);
+
 	// this function separates our array of DisneyCharacters into rows and columns
     const buildRows = () => {
         
 		// we'll need arrays to store the rows and cols in, and they will be of type JSX.Element
 		let rows : Array<JSX.Element> = [], cols : Array<JSX.Element> = [];
         
-		characters.forEach((character, index) => {
+        // switch to display only favourite characters
+        let displaychars : Array<DisneyCharacter>;
+        if (displayFav) {displaychars = characters.filter((item) => characterFavourites.includes(item._id));}
+        else {displaychars = characters;}
+
+		displaychars.forEach((character, index) => {
             cols.push(<Character key={character._id} 
                                 character={character} />);
             if ((index + 1) % 5 === 0) {
