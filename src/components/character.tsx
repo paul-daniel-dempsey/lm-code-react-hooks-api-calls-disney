@@ -1,18 +1,18 @@
 import { useContext } from "react";
-import { FavouritesContext } from "../App";
+import { FavouritesContext, UpdateFavouritesContext } from "../App";
 import { DisneyCharacter } from "../disney_character"
 
 interface CharacterProps {
   character : DisneyCharacter
-  updateFavourites : (favourites: Array<number>) => void;
 }
 
 // for our props we can reuse the DisneyCharacter interface
 // - defining an anonymous type that just has one property - a DisneyCharacter
-const Character : React.FC<CharacterProps> = ( { character, updateFavourites}) => 
+const Character : React.FC<CharacterProps> = ( { character}) => 
   {
     // Consume
     const characterFavourites = useContext(FavouritesContext);
+    const updateFavourites = useContext(UpdateFavouritesContext)
 
     // default image
     let imageSrc = "https://picsum.photos/300/200/?blur";
@@ -22,16 +22,17 @@ const Character : React.FC<CharacterProps> = ( { character, updateFavourites}) =
     };
 
     function toggleFavouriteForCharacters(characterId : number) {
-      if (!characterFavourites.includes(characterId)) {
-        // array spread syntax, add
-        updateFavourites([...characterFavourites,characterId]);
-      }
-      else {
-        //
-        const updateFavs = characterFavourites.filter(item => item !== characterId );
-        updateFavourites(updateFavs);
-      };
-      console.log(characterFavourites);
+      if (updateFavourites !== null) {
+        if (!characterFavourites.includes(characterId)) {
+          // array spread syntax, add CharacterId to CharacterFavourites
+          updateFavourites([...characterFavourites,characterId]);
+        }
+        else {
+          // remove CharacterId from CharacterFavourites
+          const updateFavs = characterFavourites.filter(item => item !== characterId );
+          updateFavourites(updateFavs);
+        };
+    };
     };
 
     return (

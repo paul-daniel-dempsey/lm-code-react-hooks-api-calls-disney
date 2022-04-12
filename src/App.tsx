@@ -10,6 +10,10 @@ import axios from 'axios';
 // Create Context
 export const FavouritesContext = React.createContext<number[]>([]);
 
+// Create Context setCharacterFavourites => 
+//  React.Dispatch (so can use value in Provider call)  
+//  React.SetStateAction (so can link setCharacterFavourites call to be change with array of numbers + initialised to null) 
+export const UpdateFavouritesContext = React.createContext<null | React.Dispatch<React.SetStateAction<Array<number>>>>(null);
 
 const App : React.FC = () => {
 
@@ -33,12 +37,13 @@ const App : React.FC = () => {
   return (
     // Provide Context of useState characterFavourites
     <FavouritesContext.Provider value={characterFavourites}>
+      <UpdateFavouritesContext.Provider value={setCharacterFavourites}>
       <div className="page">
         <Header currentPage={currentPage} />
         <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <CharacterContainer characters={characters}
-                            updateFavourites={setCharacterFavourites} />
+        <CharacterContainer characters={characters} />
       </div>
+      </UpdateFavouritesContext.Provider>
     </FavouritesContext.Provider>
   );
 }
